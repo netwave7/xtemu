@@ -1,8 +1,11 @@
-#include "core.hpp"
+#include "system.hpp"
 
 int main(int argc, char **argv)
 {
-	Core core;
+	System system;
+
+	system.opcode_map[0x01]();
+	system.opcode_map[0x00]();
 
 	return 0;
 }

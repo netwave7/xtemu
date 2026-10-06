@@ -12,7 +12,7 @@ include_directories(src)
 set(SOURCES
     src/main.cpp
 	src/cpu8088.cpp
-	src/core.cpp
+	src/system.cpp
 )
 
 add_executable(xtemu ${SOURCES})

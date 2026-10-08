@@ -1,29 +1,18 @@
 #pragma once
 #include <cstdint>
+#include "modrm_byte/reg_map.hpp"
+#include "general_register.hpp"
+#include <memory>
+#include <unordered_map>
 
 class CPU8088
 {
 	private:
 		/* == General purpose registers == */
-		struct {
-			std::uint8_t al;
-			std::uint8_t ah;
-		} ax; // Accumulator
-
-		struct {
-			std::uint8_t bl;
-			std::uint8_t bh;
-		} bx; // Base Register
-
-			struct {
-			std::uint8_t cl;
-			std::uint8_t ch;
-		} cx; // Counter Register
-
-		struct {
-			std::uint8_t dl;
-			std::uint8_t dh;
-		} dx; // Data Register
+		GeneralRegister ax; // Accumulator
+		GeneralRegister bx; // Base register
+		GeneralRegister cx; // Counter register
+		GeneralRegister dx; // Data register
 
 		/* == Segment Registers == */
 		std::uint16_t cs; // Code Segment: points to segment for executable program instructions
@@ -46,8 +35,35 @@ class CPU8088
 		// Bits 4, 3, 2, 1, 0 are status flags, usually set by the previous operation.
 		std::uint16_t flags;
 
+		// ModR/M byte 
+		// =================
+		// For example, instruction '00 C0'.
+		// 00 is the opcode, and C0 is the R/M byte.
+		// C0 in binary = 1100000
+		// Bits 7-6 = MOD (mode) === 11
+		// --> Tells you how to interpret it
+		// Bits 5-3 = REG (register) == 000
+		// --> Tells you which reigster to use
+		// Bits 2-0 = R/M (register / memory) == 000
+		// --> Tells you whether to use register or memory addressing mode.
+		//
+		//std::unordered_map<RegMapByte, std::uint8_t*> reg_map = {
+		//	{ RegMapByte::AL, ax.low_byte() },
+		//	{ RegMapByte::BL, bx.low_byte() },
+		//	{ RegMapByte::CL, cx.low_byte() },
+		//	{ RegMapByte::DL, dx.low_byte() },
+
+		//	{ RegMapByte::AH, ax.high_byte() },
+		//	{ RegMapByte::BH, bx.high_byte() },
+		//	{ RegMapByte::CH, cx.high_byte()},
+		//	{ RegMapByte::DH, dx.high_byte() }
+		//};
+
+		std::uint8_t fetched_value;
+		std::uint16_t absolute_address;
+		std::uint16_t relative_address;
+
 	public:
 		CPU8088();
 		~CPU8088();
-
 };

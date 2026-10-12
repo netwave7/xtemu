@@ -2,11 +2,13 @@
 #include <cstdint>
 #include "general_register.hpp"
 #include "modrm_byte/mod_map.hpp"
-#include "modrm_byte/reg_map.hpp"
+#include "bus.hpp"
 
 class CPU8088
 {
 	private:
+		Bus *bus = nullptr;
+
 		/* == General purpose registers == */
 		GeneralRegister ax; // Accumulator
 		GeneralRegister bx; // Base register
@@ -65,6 +67,13 @@ class CPU8088
 	public:
 		CPU8088();
 		~CPU8088();
+
+		// Temporary public.
+		std::uint8_t read_byte(std::uint32_t address);
+		void write_byte(std::uint32_t address, std::uint8_t value);
+
+		void start();
+		void connect_bus(Bus *bus);
 
 		std::uint8_t decode(std::uint8_t opcode);
 };

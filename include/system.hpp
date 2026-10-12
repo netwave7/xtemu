@@ -1,24 +1,22 @@
 #pragma once
 #include <array>
+#include <memory>
 #include "cpu8088.hpp"
+#include "memory_consts.hpp"
 
 class System
 {
 	public:
-		// TOOD: read/write 16-bit words?
-		std::uint8_t read_byte(std::uint32_t address);
-		void write_byte(std::uint32_t address, std::uint8_t value);
-
 		System();
 		~System();
 
-	private:
-		// TODO: move address boundaries into constexprs.
-		static constexpr int PHYSICAL_MEM_SIZE_K = 128;
+		std::unique_ptr<CPU8088> cpu;
 
-		std::array<std::uint8_t, PHYSICAL_MEM_SIZE_K * 1024> physical_mem { 0x00 }; // 0K -> 640K
-		std::array<std::uint8_t, 128 * 1024> video_mem { 0x00 }; // 640K -> 768K
-		std::array<std::uint8_t, 192 * 1024> expansion_mem { 0x00 }; // 768K -> 960K
-		std::array<std::uint8_t, 40 * 1024> bios_mem { 0x00 }; // 960K -> 1MB
-		CPU8088 cpu;
+	private:
+		std::unique_ptr<std::array<std::uint8_t, MemoryConsts::Sizes::PHYSICAL_MEM_SIZE>> physical_mem; // 0K ->> 640K
+		std::unique_ptr<std::array<std::uint8_t, MemoryConsts::Sizes::VIDEO_MEM_SIZE>> video_mem; // 640K ->> 768K
+		std::unique_ptr<std::array<std::uint8_t, MemoryConsts::Sizes::EXPANSION_MEM_SIZE>> expansion_mem; // 768K ->> 960K
+		std::unique_ptr<std::array<std::uint8_t, MemoryConsts::Sizes::BIOS_MEM_SIZE>> bios_mem; // 960K ->> 1MB
+
+		std::unique_ptr<Bus> bus;
 };

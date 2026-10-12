@@ -13,6 +13,7 @@ set(SOURCES
     src/main.cpp
 	src/cpu8088.cpp
 	src/system.cpp
+	src/bus.cpp
 )
 
 add_executable(xtemu ${SOURCES})

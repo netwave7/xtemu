@@ -1,9 +1,8 @@
 #pragma once
 #include <cstdint>
-#include "modrm_byte/reg_map.hpp"
 #include "general_register.hpp"
-#include <memory>
-#include <unordered_map>
+#include "modrm_byte/mod_map.hpp"
+#include "modrm_byte/reg_map.hpp"
 
 class CPU8088
 {
@@ -66,4 +65,6 @@ class CPU8088
 	public:
 		CPU8088();
 		~CPU8088();
+
+		std::uint8_t decode(std::uint8_t opcode);
 };

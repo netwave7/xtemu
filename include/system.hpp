@@ -21,5 +21,4 @@ class System
 		std::array<std::uint8_t, 192 * 1024> expansion_mem { 0x00 }; // 768K -> 960K
 		std::array<std::uint8_t, 40 * 1024> bios_mem { 0x00 }; // 960K -> 1MB
 		CPU8088 cpu;
-
-	};
+};
